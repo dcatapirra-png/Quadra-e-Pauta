@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17151f">
+  <meta name="description" content="Organize basquete, jornalismo, estudos, inglês e projetos de tecnologia em um só lugar.">
+  <title>Quadra &amp; Pauta — Organize sua evolução</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./"><span class="brand-icon" aria-hidden="true">Q&amp;P</span><span>QUADRA <i>&amp;</i> PAUTA<small>Organização dentro e fora da quadra</small></span></a>
+    <span class="top-caption">Basquete · Jornalismo · Estudos · Tecnologia</span>
+    <button id="logout" class="secondary" hidden>Sair da conta</button>
+  </header>
+  <main>
+    <p id="message" class="notice" role="status" aria-live="polite">Carregando aplicação… Se esta mensagem permanecer, abra pelo servidor local indicado no README e confira sua conexão.</p>
+    <noscript><p class="notice">Ative o JavaScript para usar esta aplicação.</p></noscript>
+    <section id="setup" class="setup card" hidden>
+      <span class="eyebrow">PRIMEIRO ACESSO</span>
+      <h2>Falta conectar o Firebase.</h2>
+      <p>O projeto está preparado. Siga o README para criar sua conta, ativar os serviços e preencher <code>public/firebase-config.js</code>.</p>
+      <p>Depois, atualize esta página para cadastrar seu usuário.</p>
+    </section>
+    <section id="auth-view" class="auth-layout">
+      <div class="intro">
+        <span class="eyebrow">DISCIPLINA NA ROTINA</span>
+        <h1>Disciplina na rotina.<br><span> evolução em cada área.</span></h1>
+        <p>Organize seus treinos de basquete, pautas esportivas, estudos, inglês e projetos de IoT em um só lugar.</p>
+        <div class="interest-grid"><div><b>🏀</b><span>Basquete</span></div><div><b>🎙️</b><span>Jornalismo</span></div><div><b>📚</b><span>Estudos</span></div><div><b>🇺🇸</b><span>Inglês</span></div><div><b>💻</b><span>IoT e tecnologia</span></div></div>
+        <div class="intro-foot">Evolução dentro e fora da quadra.</div>
+      </div>
+      <div class="card auth-card">
+        <span class="eyebrow">SEU ESPAÇO PESSOAL</span>
+        <h2 id="auth-heading">Vamos começar?</h2>
+        <p id="auth-description" class="muted">Entre com seu e-mail e senha para organizar seus objetivos.</p>
+        <div class="switcher" aria-label="Acesso à conta">
+          <button type="button" id="login-tab" aria-pressed="true">Entrar</button>
+          <button type="button" id="signup-tab" aria-pressed="false">Criar conta</button>
+        </div>
+        <form id="auth-form">
+          <fieldset id="auth-fields" disabled>
+            <label for="email">E-mail</label>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="voce@exemplo.com" required maxlength="254">
+            <label for="password">Senha</label>
+            <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Sua senha">
+            <div id="confirm-group" hidden>
+              <label for="confirm-password">Confirme a senha</label>
+              <input id="confirm-password" type="password" autocomplete="new-password" placeholder="Repita sua senha" disabled>
+              <p class="help">Use pelo menos 6 caracteres ou a política definida no seu projeto.</p>
+            </div>
+            <button class="primary full" id="auth-submit" type="submit">Entrar na minha conta <span aria-hidden="true">→</span></button>
+          </fieldset>
+        </form>
+        <p class="auth-note">As tarefas ficam vinculadas à sua conta.</p>
+      </div>
+    </section>
+    <section id="dashboard" hidden>
+      <div class="dashboard-heading"><div><span class="eyebrow">DISCIPLINA NA ROTINA · EVOLUÇÃO NA PRÁTICA</span><h1>Meu planejamento<span>.</span></h1><p id="account" class="muted"></p></div><span id="sync-status" class="sync" role="status">Conectando…</span></div>
+      <div class="stats"><div class="card"><span>Total de atividades</span><strong id="total">0</strong></div><div class="card"><span>Para fazer</span><strong id="pending">0</strong></div><div class="card accent-card"><span>Concluídas</span><strong id="completed">0</strong></div></div>
+      <div class="workspace">
+        <section class="card editor"><span class="eyebrow">UM PASSO DE CADA VEZ</span><h2 id="editor-heading">Adicionar atividade</h2><form id="task-form"><fieldset id="task-fields" disabled>
+          <label for="task-title">O que você precisa fazer?</label><input id="task-title" maxlength="120" required placeholder="Ex.: Treinar arremessos ou escrever uma pauta">
+          <label for="task-category">Área</label><select id="task-category"><option value="Basquete">🏀 Basquete</option><option value="Jornalismo">🎙️ Jornalismo</option><option value="Estudos">📚 Estudos</option><option value="Inglês">🇺🇸 Inglês</option><option value="Tecnologia / IoT">💻 Tecnologia / IoT</option><option value="Pessoal">⭐ Pessoal</option></select>
+          <label for="task-due-date">Prazo <span class="optional">(opcional)</span></label><input id="task-due-date" type="date">
+          <label for="task-description">Detalhes <span class="optional">(opcional)</span></label><textarea id="task-description" rows="4" maxlength="1000" placeholder="Descreva os detalhes, metas ou o que precisa praticar…"></textarea>
+          <label for="task-priority">Prioridade</label><select id="task-priority"><option value="normal">Normal</option><option value="alta">Alta</option><option value="baixa">Baixa</option></select>
+          <button id="save-task" class="primary full" type="submit">Adicionar atividade +</button><button id="cancel-edit" class="secondary full" type="button" hidden>Cancelar edição</button>
+        </fieldset></form></section>
+        <section class="card task-panel" aria-label="Lista de tarefas">
+          <div class="list-heading"><h2>Minha rotina</h2><span id="visible-count" class="muted">0 tarefas</span></div>
+          <div class="filters" aria-label="Filtrar tarefas"><button type="button" data-filter="all" aria-pressed="true">Todas</button><button type="button" data-filter="pending" aria-pressed="false">Pendentes</button><button type="button" data-filter="done" aria-pressed="false">Concluídas</button></div>
+          <label class="sr-only" for="search">Buscar tarefas</label><input id="search" type="search" placeholder="Buscar atividades…" maxlength="120">
+          <p id="empty" class="empty">Carregando suas atividades…</p><ul id="task-list" class="task-list"></ul>
+        </section>
+      </div>
+    </section>
+  </main>
+  <footer>QUADRA &amp; PAUTA <span>Disciplina na rotina. Evolução dentro e fora da quadra.</span></footer>
+</body>
+</html>
